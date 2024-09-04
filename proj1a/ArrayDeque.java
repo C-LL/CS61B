@@ -43,7 +43,7 @@ public class ArrayDeque<T>{
 //        deque.addFirst('c');
 //    }
 
-    public void addFirst(Object item){
+    private void addFirst(T){
         if (size == data.length){
             arrayExtend();
         }
@@ -54,9 +54,9 @@ public class ArrayDeque<T>{
             front -= 1;
         }
         size += 1;
-        data[front] = (T)item;
+        data[front] = T;
     }
-    public void addLast(Object item){
+    private void addLast(T){
         if (size == data.length){
             arrayExtend();
         }
@@ -68,7 +68,7 @@ public class ArrayDeque<T>{
             }
         }
         size += 1;
-        data[end] = (T)item;
+        data[end] = T;
     }
     public boolean isEmpty(){
         return size == 0;
@@ -126,7 +126,7 @@ public class ArrayDeque<T>{
             return getRecursiveHelp(f+1, index-1);
         }
     }
-    public T getRecursive(int index){
+    private T getRecursive(int index){
         return getRecursiveHelp(front, index);
     }
 }
