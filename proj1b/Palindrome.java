@@ -1,7 +1,7 @@
 package proj1b;
 import org.junit.Test;
 import proj1b.Deque;
-import proj1a.ArrayDeque;
+//import proj1a.ArrayDeque;
 
 public class Palindrome {
     public Deque<Character> wordToDeque(String word){

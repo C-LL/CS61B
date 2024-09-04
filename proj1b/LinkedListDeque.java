@@ -1,5 +1,4 @@
-package proj1a;
-import proj1b.Deque;
+package proj1b;
 
 public class LinkedListDeque<T> implements Deque{
     private LinkedListNode head, tail;

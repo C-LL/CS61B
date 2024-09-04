@@ -1,5 +1,5 @@
 package proj1b;
-import proj0.examples.In;
+//import proj0.examples.In;
 import proj1b.Palindrome;
 
 /** This class outputs all palindromes in the words file in the current directory. */
