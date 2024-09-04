@@ -26,7 +26,7 @@ public class LinkedListDeque<T>{
         tail.prev = head;
         size = 0;
     }
-    private void addFirst(T item){
+    public void addFirst(T item){
         LinkedListNode newNode = new LinkedListNode(T);
         newNode.data = item;
         newNode.next = head.next;
@@ -35,7 +35,7 @@ public class LinkedListDeque<T>{
         newNode.prev = head;
         size += 1;
     }
-    private void addLast(T item){
+    public void addLast(T item){
         LinkedListNode newNode = new LinkedListNode(T);
         newNode.data = item;
         newNode.prev = tail;
