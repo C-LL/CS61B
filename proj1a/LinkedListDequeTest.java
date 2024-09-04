@@ -1,5 +1,5 @@
 /** Performs some basic linked list tests. */
-package proj1a;
+//package proj1a;
 
 public class LinkedListDequeTest {
 	

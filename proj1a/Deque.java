@@ -1,4 +1,4 @@
-package proj1a;
+//package proj1a;
 
 public interface Deque<T> {
     public void addFirst(T item);
