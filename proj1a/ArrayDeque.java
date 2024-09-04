@@ -1,6 +1,6 @@
 package proj1a;
 import org.junit.Test;
-import proj1b.Deque;
+//import proj1b.Deque;
 
 public class ArrayDeque<T> implements Deque{
     private T[] data;
