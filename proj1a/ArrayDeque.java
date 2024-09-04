@@ -43,7 +43,7 @@ public class ArrayDeque<T>{
 //        deque.addFirst('c');
 //    }
 
-    private void addFirst(T){
+    private void addFirst(T item){
         if (size == data.length){
             arrayExtend();
         }
@@ -54,9 +54,9 @@ public class ArrayDeque<T>{
             front -= 1;
         }
         size += 1;
-        data[front] = T;
+        data[front] = item;
     }
-    private void addLast(T){
+    private void addLast(T item){
         if (size == data.length){
             arrayExtend();
         }
@@ -68,7 +68,7 @@ public class ArrayDeque<T>{
             }
         }
         size += 1;
-        data[end] = T;
+        data[end] = item;
     }
     public boolean isEmpty(){
         return size == 0;

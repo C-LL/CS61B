@@ -26,16 +26,18 @@ public class LinkedListDeque<T>{
         tail.prev = head;
         size = 0;
     }
-    private void addFirst(T){
+    private void addFirst(T item){
         LinkedListNode newNode = new LinkedListNode(T);
+        newNode.data = item;
         newNode.next = head.next;
         head.next.prev = newNode;
         head.next = newNode;
         newNode.prev = head;
         size += 1;
     }
-    private void addLast(T){
+    private void addLast(T item){
         LinkedListNode newNode = new LinkedListNode(T);
+        newNode.data = item;
         newNode.prev = tail;
         tail.next = newNode;
         tail = newNode;
