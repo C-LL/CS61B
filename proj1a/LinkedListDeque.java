@@ -1,7 +1,7 @@
 package proj1a;
 //import proj1b.Deque;
 
-public class LinkedListDeque<T> implements Deque{
+public class LinkedListDeque<T>{
     private LinkedListNode head, tail;
     private int size;
 
@@ -26,7 +26,6 @@ public class LinkedListDeque<T> implements Deque{
         tail.prev = head;
         size = 0;
     }
-    @Override
     public void addFirst(Object item){
         LinkedListNode newNode = new LinkedListNode((T) item);
         newNode.next = head.next;
@@ -35,7 +34,6 @@ public class LinkedListDeque<T> implements Deque{
         newNode.prev = head;
         size += 1;
     }
-    @Override
     public void addLast(Object item){
         LinkedListNode newNode = new LinkedListNode((T) item);
         newNode.prev = tail;
@@ -43,15 +41,12 @@ public class LinkedListDeque<T> implements Deque{
         tail = newNode;
         size += 1;
     }
-    @Override
     public boolean isEmpty(){
         return size == 0;
     }
-    @Override
     public int size(){
         return size;
     }
-    @Override
     public void printDeque(){
         LinkedListNode p = head;
         while(p != null){
@@ -59,7 +54,6 @@ public class LinkedListDeque<T> implements Deque{
             p = p.next;
         }
     }
-    @Override
     public T removeFirst(){
         if(this.isEmpty()){
             return null;
@@ -70,7 +64,6 @@ public class LinkedListDeque<T> implements Deque{
             return item;
         }
     }
-    @Override
     public T removeLast(){
         if(this.isEmpty()){
             return null;
@@ -81,7 +74,6 @@ public class LinkedListDeque<T> implements Deque{
             return item;
         }
     }
-    @Override
     public T get(int index){
         LinkedListNode p = head.next;
         for(int i = 0; i < index; i++){
@@ -98,7 +90,6 @@ public class LinkedListDeque<T> implements Deque{
             return getRecursiveHelp(p.next, index-1);
         }
     }
-    @Override
     public T getRecursive(int index){
         return getRecursiveHelp(head.next, index);
     }

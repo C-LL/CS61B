@@ -2,7 +2,7 @@ package proj1a;
 import org.junit.Test;
 //import proj1b.Deque;
 
-public class ArrayDeque<T> implements Deque{
+public class ArrayDeque<T>{
     private T[] data;
     private int size;
     private int front, end; //循环数组的开头和结尾
@@ -43,7 +43,6 @@ public class ArrayDeque<T> implements Deque{
 //        deque.addFirst('c');
 //    }
 
-    @Override
     public void addFirst(Object item){
         if (size == data.length){
             arrayExtend();
@@ -57,7 +56,6 @@ public class ArrayDeque<T> implements Deque{
         size += 1;
         data[front] = (T)item;
     }
-    @Override
     public void addLast(Object item){
         if (size == data.length){
             arrayExtend();
@@ -72,15 +70,12 @@ public class ArrayDeque<T> implements Deque{
         size += 1;
         data[end] = (T)item;
     }
-    @Override
     public boolean isEmpty(){
         return size == 0;
     }
-    @Override
     public int size(){
         return size;
     }
-    @Override
     public void printDeque(){
         int i = 0;
         while(i<size){
@@ -92,7 +87,6 @@ public class ArrayDeque<T> implements Deque{
             i += 1;
         }
     }
-    @Override
     public T removeFirst(){
         if(isEmpty()){
             return null;
@@ -106,7 +100,6 @@ public class ArrayDeque<T> implements Deque{
         size -= 1;
         return data[oldFront];
     }
-    @Override
     public T removeLast(){
         if(isEmpty()){
             return null;
@@ -120,7 +113,6 @@ public class ArrayDeque<T> implements Deque{
         size -= 1;
         return data[oldEnd];
     }
-    @Override
     public T get(int index){
         return data[(index+front)%100];
     }
@@ -134,7 +126,6 @@ public class ArrayDeque<T> implements Deque{
             return getRecursiveHelp(f+1, index-1);
         }
     }
-    @Override
     public T getRecursive(int index){
         return getRecursiveHelp(front, index);
     }
