@@ -21,7 +21,7 @@
  *       images and strings
  *
  ******************************************************************************/
-
+package proj0.examples;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.FileDialog;

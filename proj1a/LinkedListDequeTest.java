@@ -1,4 +1,6 @@
 /** Performs some basic linked list tests. */
+package proj1a;
+
 public class LinkedListDequeTest {
 	
 	/* Utility method for printing out empty checks. */

@@ -5,7 +5,7 @@
  *  Reads in data of various types from standard input, files, and URLs.
  *
  *************************************************************************/
-
+package proj0.examples;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;

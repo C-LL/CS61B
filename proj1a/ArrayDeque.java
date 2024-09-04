@@ -1,50 +1,86 @@
-public class ArrayDeque<T> {
+package proj1a;
+import org.junit.Test;
+import proj1b.Deque;
+
+public class ArrayDeque<T> implements Deque{
     public T[] data;
     public int size;
     public int front, end; //循环数组的开头和结尾
 
     public ArrayDeque() {
-        data = (T[]) new Object[8];
+        data = (T[]) new Object[8]; // 8
         size = 0;
         front = end = 0;
     }
-    public void arrayExtend(){
+    private void arrayExtend(){         // 循环数组扩容
         if(size == data.length){
             T[] newData = (T[]) new Object[data.length*2];
-            for(int i = 0; i < size; i++){
-                newData[i] = data[i];
+            if(front < end){
+                for(int i = front; i < end+1; i++){   // front < end 情况
+                    newData[i-front] = data[i];
+                }
+            }else{      // front > end 情况
+                int i;
+                for(i = front; i < data.length; i++){ // [front,-1]
+                    newData[i-front] = data[i];
+                }
+                for(int j = 0; j < end+1; j++){   // [0,end]
+                    newData[i-front] = data[j];
+                    i+=1;
+                }
             }
             data = newData;
+            // 更新front和end，使front为0
+            front -= front;
+            end -= front;
         }
     }
-    public void addFirst(T item){
+//    @Test
+//    public void test(){
+//        Deque<Character> deque = new ArrayDeque<Character>();
+//        deque.addFirst('a');
+//        deque.addFirst('b');
+//        deque.addFirst('c');
+//    }
+
+    @Override
+    public void addFirst(Object item){
         if (size == data.length){
             arrayExtend();
         }
         if(front==0){
-            front = data.length-1;
+            if(!isEmpty()){
+                front = data.length-1;}
         }else{
             front -= 1;
         }
-        data[front] = item;
+        size += 1;
+        data[front] = (T)item;
     }
-    public void addLast(T item){
+    @Override
+    public void addLast(Object item){
         if (size == data.length){
             arrayExtend();
         }
         if(end==data.length-1){
             end = 0;
         }else{
-            end += 1;
+            if(!isEmpty()){
+                end += 1;
+            }
         }
-        data[end] = item;
+        size += 1;
+        data[end] = (T)item;
     }
+    @Override
     public boolean isEmpty(){
         return size == 0;
     }
+    @Override
     public int size(){
         return size;
     }
+    @Override
     public void printDeque(){
         int i = 0;
         while(i<size){
@@ -56,6 +92,7 @@ public class ArrayDeque<T> {
             i += 1;
         }
     }
+    @Override
     public T removeFirst(){
         if(isEmpty()){
             return null;
@@ -66,8 +103,10 @@ public class ArrayDeque<T> {
         }else{
             front += 1;
         }
+        size -= 1;
         return data[oldFront];
     }
+    @Override
     public T removeLast(){
         if(isEmpty()){
             return null;
@@ -78,12 +117,14 @@ public class ArrayDeque<T> {
         }else{
             end -= 1;
         }
+        size -= 1;
         return data[oldEnd];
     }
+    @Override
     public T get(int index){
         return data[(index+front)%100];
     }
-    public T getRecursiveHelp(int f, int index){
+    private T getRecursiveHelp(int f, int index){
         if(f>data.length-1){
             f = f % data.length;
         }
@@ -93,6 +134,7 @@ public class ArrayDeque<T> {
             return getRecursiveHelp(f+1, index-1);
         }
     }
+    @Override
     public T getRecursive(int index){
         return getRecursiveHelp(front, index);
     }
