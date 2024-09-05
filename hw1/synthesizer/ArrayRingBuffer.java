@@ -34,12 +34,12 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
      * covered Monday.
      */
     @Override
-    public void enqueue(Object x) {
+    public void enqueue(T x) {
         // TODO: Enqueue the item. Don't forget to increase fillCount and update last.
         if(isFull()){
             throw new RuntimeException("Ring buffer overflow");
         }
-        rb[last] = (T)x;
+        rb[last] = x;
         last = (last + 1) % capacity;
         fillCount++;
     }
@@ -84,7 +84,6 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
         }
         public T next() {
             T retVal = rb[pos];
-            pos = (pos + 1) % capacity;
             curNum++;
             return retVal;
         }
