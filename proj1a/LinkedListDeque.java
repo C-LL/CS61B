@@ -27,7 +27,7 @@ public class LinkedListDeque<T>{
         size = 0;
     }
     public void addFirst(T item){
-        LinkedListNode newNode = new Node(T);
+        Node newNode = new Node(T);
         newNode.data = item;
         newNode.next = head.next;
         head.next.prev = newNode;
@@ -36,7 +36,7 @@ public class LinkedListDeque<T>{
         size += 1;
     }
     public void addLast(T item){
-        LinkedListNode newNode = new Node(T);
+        Node newNode = new Node(T);
         newNode.data = item;
         newNode.prev = tail;
         tail.next = newNode;
@@ -50,7 +50,7 @@ public class LinkedListDeque<T>{
         return size;
     }
     public void printDeque(){
-        LinkedListNode p = head;
+        Node p = head;
         while(p != null){
             System.out.print(p.data + " ");
             p = p.next;
@@ -79,13 +79,13 @@ public class LinkedListDeque<T>{
         }
     }
     public T get(int index){
-        LinkedListNode p = head.next;
+        Node p = head.next;
         for(int i = 0; i < index; i++){
             p = p.next;
         }
         return p!=null ? p.data : null;
     }
-    private T getRecursiveHelp(LinkedListNode p, int index){
+    private T getRecursiveHelp(Node p, int index){
         p = head.next;
         if(p==null) return null;
         if(index == 0){
