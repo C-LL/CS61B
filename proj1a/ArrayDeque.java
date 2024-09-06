@@ -77,6 +77,9 @@ public class ArrayDeque<T>{
         return size;
     }
     public void printDeque(){
+        if(isEmpty()) {
+            return;
+        }
         int i = 0;
         while(i<size){
             int j = i + front;
@@ -86,6 +89,7 @@ public class ArrayDeque<T>{
             System.out.print(data[j] + " ");
             i += 1;
         }
+        System.out.println();
     }
     public T removeFirst(){
         if(isEmpty()){
@@ -114,7 +118,10 @@ public class ArrayDeque<T>{
         return data[oldEnd];
     }
     public T get(int index){
-        return data[(index+front)%100];
+        if(index < 0 || index >= size){
+            return null;
+        }
+        return data[(index+front)%size];
     }
     private T getRecursiveHelp(int f, int index){
         if(f>data.length-1){

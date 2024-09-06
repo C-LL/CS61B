@@ -6,14 +6,14 @@ public class LinkedListDeque<T>{
     private int size;
 
     private class LinkedListNode {
-        T data;
-        LinkedListNode prev;
-        LinkedListNode next;
-        private LinkedListNode(){
+        private T data;
+        private LinkedListNode prev;
+        private LinkedListNode next;
+        public LinkedListNode(){
             data = null;
             prev = next = null;
         }
-        private LinkedListNode(T data) {
+        public LinkedListNode(T data) {
             this.data = data;
             this.prev = this.next = null;
         }
