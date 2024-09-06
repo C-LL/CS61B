@@ -2,32 +2,32 @@
 //import proj1b.Deque;
 
 public class LinkedListDeque<T>{
-    private LinkedListNode head, tail;
+    private Node head, tail;
     private int size;
 
-    private class LinkedListNode {
+    private class Node {
         private T data;
-        private LinkedListNode prev;
-        private LinkedListNode next;
-        public LinkedListNode(){
+        private Node prev;
+        private Node next;
+        public Node(){
             data = null;
             prev = next = null;
         }
-        public LinkedListNode(T data) {
+        public Node(T data) {
             this.data = data;
             this.prev = this.next = null;
         }
     }
 
     public LinkedListDeque() {
-        head = new LinkedListNode();
-        tail = new LinkedListNode();
+        head = new Node();
+        tail = new Node();
         head.next = tail;
         tail.prev = head;
         size = 0;
     }
     public void addFirst(T item){
-        LinkedListNode newNode = new LinkedListNode(T);
+        LinkedListNode newNode = new Node(T);
         newNode.data = item;
         newNode.next = head.next;
         head.next.prev = newNode;
@@ -36,7 +36,7 @@ public class LinkedListDeque<T>{
         size += 1;
     }
     public void addLast(T item){
-        LinkedListNode newNode = new LinkedListNode(T);
+        LinkedListNode newNode = new Node(T);
         newNode.data = item;
         newNode.prev = tail;
         tail.next = newNode;
