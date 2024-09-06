@@ -4,16 +4,18 @@
 
 public class ArrayDeque<T>{
     private T[] data;
-    private int size;
+    private int size, volume;
     private int front, end; //循环数组的开头和结尾
 
     public ArrayDeque() {
         data = (T[]) new Object[8]; // 8
         size = 0;
+        volume = data.length;
         front = end = 0;
     }
-    private void arrayExtend(){         // 循环数组扩容
-        if(size == data.length){
+    private void resize(){         // 循环数组扩容
+        if(size == volume){
+            int oldvolume = volume;
             T[] newData = (T[]) new Object[data.length*2];
             if(front < end){
                 for(int i = front; i < end+1; i++){   // front < end 情况
@@ -26,10 +28,11 @@ public class ArrayDeque<T>{
                 }
                 for(int j = 0; j < end+1; j++){   // [0,end]
                     newData[i-front] = data[j];
-                    i+=1;
+                    i++;
                 }
             }
             data = newData;
+            volume = newData.length;
             // 更新front和end，使front为0
             front -= front;
             end -= front;
@@ -44,30 +47,31 @@ public class ArrayDeque<T>{
 //    }
 
     public void addFirst(T item){
-        if (size == data.length){
-            arrayExtend();
+        if (size >= volume-1){
+            resize();
         }
         if(front==0){
             if(!isEmpty()){
-                front = data.length-1;}
+                front = volume-1;
+            }
         }else{
-            front -= 1;
+            front--;
         }
-        size += 1;
+        size++;
         data[front] = item;
     }
     public void addLast(T item){
-        if (size == data.length){
-            arrayExtend();
+        if (size >= volume-1){
+            resize();
         }
         if(end==data.length-1){
             end = 0;
         }else{
             if(!isEmpty()){
-                end += 1;
+                end++;
             }
         }
-        size += 1;
+        size++;
         data[end] = item;
     }
     public boolean isEmpty(){
@@ -96,7 +100,7 @@ public class ArrayDeque<T>{
             return null;
         }
         int oldFront = front;
-        if(front == data.length-1){
+        if(front == volume){
             front = 0;
         }else{
             front += 1;
@@ -110,7 +114,7 @@ public class ArrayDeque<T>{
         }
         int oldEnd = end;
         if(end == 0){
-            end = data.length-1;
+            end = volume-1;
         }else{
             end -= 1;
         }
