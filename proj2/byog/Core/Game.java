@@ -2,17 +2,23 @@ package byog.Core;
 
 import byog.TileEngine.TERenderer;
 import byog.TileEngine.TETile;
+import edu.princeton.cs.introcs.StdDraw;
+
+import java.awt.*;
 
 public class Game {
-    TERenderer ter = new TERenderer();
+    /* Feel free to change the width and height. */
+    private boolean isloaded = false;
     /* Feel free to change the width and height. */
     public static final int WIDTH = 80;
     public static final int HEIGHT = 30;
+    private long seed;
 
     /**
      * Method used for playing a fresh game. The game should start from the main menu.
      */
     public void playWithKeyboard() {
+
     }
 
     /**
@@ -27,12 +33,39 @@ public class Game {
      * @param input the input string to feed to your program
      * @return the 2D TETile[][] representing the state of the world
      */
+
     public TETile[][] playWithInputString(String input) {
         // TODO: Fill out this method to run the game using the input passed in,
         // and return a 2D tile representation of the world that would have been
         // drawn if the same inputs had been given to playWithKeyboard().
+        StdDraw.clear();
+        StdDraw.clear(Color.black);
+
+        Font topFont = new Font("Monaco", Font.BOLD, 20);
+        StdDraw.setFont(topFont);
+        StdDraw.text(1, HEIGHT/2, "CS61B: THE GAME");
+        Font midFont = new Font("Monaco", Font.BOLD, 10);
+        StdDraw.setFont(midFont);
+        StdDraw.text(WIDTH/2-1, HEIGHT/2, "New Game (N)");
+        StdDraw.text(WIDTH/2, HEIGHT/2, "Load Game (L)");
+        StdDraw.text(WIDTH/2+1, HEIGHT/2, "Quit (Q)");
 
         TETile[][] finalWorldFrame = null;
         return finalWorldFrame;
+    }
+    public static void main(String[] args) {
+        Game game = new Game();
+        String s = "n123sss:q";
+
+        StdDraw.clear(Color.black);
+
+        Font topFont = new Font("Monaco", Font.BOLD, 20);
+        StdDraw.setFont(topFont);
+//        StdDraw.setPenColor(Color.white);
+        StdDraw.text(WIDTH-1, HEIGHT-1, "CS61B: THE GAME");
+        StdDraw.line(0, HEIGHT - 2, WIDTH, HEIGHT - 2);
+        StdDraw.pause(1500);
+
+//        game.playWithInputString(s);
     }
 }

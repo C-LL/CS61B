@@ -15,14 +15,14 @@
  *  with with site (0, 0) in the upper left-hand corner.
  *
  ******************************************************************************/
-package hw2;
+package hw2.hw2;
 import java.awt.Font;
 
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdDraw;
 
 public class PercolationVisualizer {
-/*
+
     // delay in miliseconds (controls animation speed)
     private static final int DELAY = 100;
 
@@ -61,7 +61,8 @@ public class PercolationVisualizer {
     }
 
     private static void simulateFromFile(String filename) {
-        In in = new In(filename);
+//        In in = new In(filename);
+        In in = new In("E:\\new\\CS61B\\hw2\\inputFiles\\input20.txt");
         int N = in.readInt();
         Percolation perc = new Percolation(N);
 
@@ -83,5 +84,5 @@ public class PercolationVisualizer {
     public static void main(String[] args) {
         String filename = args[0];
         simulateFromFile(filename);
-    }*/
+    }
 }
