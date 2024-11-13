@@ -2,7 +2,7 @@ package hw4.puzzle;
 
 import edu.princeton.cs.algs4.Queue;
 
-public class Board {
+public class Board implements WorldState {
     private int N;
     private int[][] grids;
     public Board(int[][] tiles){
@@ -21,6 +21,7 @@ public class Board {
     public int size(){
         return N;
     }
+    @Override
     //source from http://joshh.ug/neighbors.html
     public Iterable<WorldState> neighbors() {
         Queue<WorldState> neighbors = new Queue<>();
@@ -97,7 +98,7 @@ public class Board {
         }
         return true;
     }
-    /** Returns the string representation of the board. 
+    /** Returns the string representation of the board.
       * Uncomment this method. */
     public String toString() {
         StringBuilder s = new StringBuilder();
