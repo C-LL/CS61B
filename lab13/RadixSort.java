@@ -1,3 +1,7 @@
+import org.junit.Test;
+
+import java.util.ArrayList;
+
 /**
  * Class for doing Radix sort
  *
@@ -17,9 +21,26 @@ public class RadixSort {
      */
     public static String[] sort(String[] asciis) {
         // TODO: Implement LSD Sort
-        return null;
+        String[] sorted = asciis.clone();
+        int len = 0;
+        for(String s : asciis){
+            len = Math.max(len, s.length());
+        }
+        for(int i = len - 1; i >= 0; i--){
+            sortHelperLSD(sorted, i);
+        }
+        return sorted;
     }
-
+    @Test
+    public void testSort() {
+        String[] test = {"123", "456", "789"};
+        System.out.println(sort(test));
+    }
+    public static void main(String[] args) {
+        String[] test = {"456", "123", "789"};
+        String[] sorted = sort(test);
+        System.out.println(sorted.toString());
+    }
     /**
      * LSD helper method that performs a destructive counting sort the array of
      * Strings based off characters at a specific index.
@@ -28,6 +49,20 @@ public class RadixSort {
      */
     private static void sortHelperLSD(String[] asciis, int index) {
         // Optional LSD helper method for required LSD radix sort
+        int[] counts = new int[257];
+        for(String s : asciis){
+            int c = s.charAt(index) + 1;
+            counts[c]++;
+        }
+        for(int i = 1; i < counts.length; i++){
+            counts[i] += counts[i - 1];
+        }
+        String[] sorted = new String[asciis.length];
+        for(int j = asciis.length - 1; j >= 0; j--){
+            int c = asciis[j].charAt(index) + 1;
+            sorted[--counts[c]] = asciis[j];
+        }
+        System.arraycopy(sorted, 0, asciis, 0, sorted.length);
         return;
     }
 
