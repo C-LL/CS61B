@@ -29,11 +29,11 @@ public class Router {
                                           double destlon, double destlat) {
         Long source = g.closest(stlon, stlat);
         Long destination = g.closest(destlon, destlat);
-        List<Long> path = new ArrayList<>();
+        List<Long> path = new LinkedList<>();
 
         for(Long v : g.vertices()){
             g.visited.put(v, false);
-            g.dist.put(v, Double.POSITIVE_INFINITY);
+            g.dist.put(v, Double.MAX_VALUE);
         }
         g.hDist.put(source, 0.0);
         MinPQ<Long> minheap = new MinPQ<>(Comparator.comparingDouble((Long id) -> g.hDist.get(id)));
