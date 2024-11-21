@@ -1,4 +1,5 @@
 import edu.princeton.cs.algs4.MinPQ;
+import org.junit.Test;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -32,7 +33,7 @@ public class Router {
 
         for(Long v : g.vertices()){
             g.visited.put(v, false);
-            g.dist.put(v, 0.0);
+            g.dist.put(v, Double.POSITIVE_INFINITY);
         }
         g.hDist.put(source, 0.0);
         MinPQ<Long> minheap = new MinPQ<>(Comparator.comparingDouble((Long id) -> g.hDist.get(id)));
@@ -46,7 +47,7 @@ public class Router {
             Long current = minheap.delMin();
             path.add(current);
             g.visited.put(current, true);
-            if(current == destination){
+            if(Objects.equals(current, destination)){
                 targetFound = true;
                 return path;
             }
