@@ -1,5 +1,6 @@
-import java.util.List;
-import java.util.Objects;
+import edu.princeton.cs.algs4.MinPQ;
+
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,7 +26,59 @@ public class Router {
      */
     public static List<Long> shortestPath(GraphDB g, double stlon, double stlat,
                                           double destlon, double destlat) {
-        return null; // FIXME
+        Long source = g.closest(stlon, stlat);
+        Long destination = g.closest(destlon, destlat);
+        List<Long> path = new ArrayList<>();
+
+        for(Long v : g.vertices()){
+            g.visited.put(v, false);
+            g.dist.put(v, 0.0);
+        }
+        g.hDist.put(source, 0.0);
+        MinPQ<Long> minheap = new MinPQ<>(Comparator.comparingDouble((Long id) -> g.hDist.get(id)));
+//        MinPQ<Long> minheap = new MinPQ<>(Comparator.comparingDouble((Long id) ->
+//                                  GraphDB.distance(stlon, stlat, g.nodes.get(id).lon, g.nodes.get(id).lat)
+//                                + greatCricleDistance(destlon, destlat, g.nodes.get(id).lon, g.nodes.get(id).lat)));
+        minheap.insert(source);
+
+        boolean targetFound = false;
+        while(!targetFound){
+            Long current = minheap.delMin();
+            path.add(current);
+            g.visited.put(current, true);
+            if(current == destination){
+                targetFound = true;
+                return path;
+            }
+            for(Long id : g.adjacent(current)){
+                if(!g.visited.get(id)){
+                    g.visited.put(id, true);
+                    g.dist.put(id, g.dist.get(current) + g.distance(current, id));
+                    g.hDist.put(id, g.dist.get(id) + greatCricleDistance(g.nodes.get(id).lon, g.nodes.get(id).lat,
+                                                                    destlon, destlat));
+                    minheap.insert(id);
+                }
+            }
+        }
+        return path; // FIXME
+    }
+
+    /* Calculate the great circle distance between two points on earth
+     * @param lon1 The longitude of the start location.
+     * @param lat1 The latitude of the start location.
+     * @param lon2 The longitude of the destination location.
+     * @param lat2 The latitude of the destination location.
+     * @return the heuristic distance(great-circle distance).
+     */
+    public static double greatCricleDistance(double lon1, double lat1, double lon2, double lat2){
+        double R = 3963;
+        double deltaLon = (lon2 - lon1) * Math.PI / 180;
+        double deltaLat = (lat2 - lat1) * Math.PI / 180;
+        double a = Math.sin(deltaLat / 2) * Math.sin(deltaLat / 2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                        Math.sin(deltaLon / 2) * Math.sin(deltaLon / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return R * c;
     }
 
     /**
@@ -37,9 +90,44 @@ public class Router {
      * route.
      */
     public static List<NavigationDirection> routeDirections(GraphDB g, List<Long> route) {
-        return null; // FIXME
-    }
+        List<NavigationDirection> directions = new LinkedList<>();
+        Long scource = route.get(0);
+        NavigationDirection start = new NavigationDirection();
+        start.direction = NavigationDirection.START;
+        start.way = g.ways.get(scource).name;
+        start.distance = 0.0;
+        directions.add(start);
 
+        for(Long id : route){
+            if(route.contains(id)){
+                continue;
+            }
+            double alpha = 180 / Math.PI * Math.atan2(g.nodes.get(id).lon, g.nodes.get(id).lat);
+            NavigationDirection curId = new NavigationDirection();
+            curId.way = g.ways.get(id).name;
+            curId.distance = g.dist.get(id);
+            curId.direction = directionHelpter(alpha);
+            directions.add(curId);
+        }
+        return directions; // FIXME
+    }
+    public static int directionHelpter(double alpha){
+        if(alpha > -15 && alpha < 15){
+            return 1;
+        }else if(alpha > -30 && alpha <= -15){
+            return 2;
+        }else if(alpha >= 15 && alpha < 30){
+            return 3;
+        }else if(alpha > -100 && alpha <= -30){
+            return 4;
+        }else if(alpha >= 30 && alpha < 100){
+            return 5;
+        }else if(alpha <= -100){
+            return 6;
+        }else{
+            return 7;
+        }
+    }
 
     /**
      * Class to represent a navigation direction, which consists of 3 attributes:

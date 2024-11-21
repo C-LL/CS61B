@@ -8,9 +8,9 @@ import java.util.Map;
  * not draw the output correctly.
  */
 public class Rasterer {
-
+    private final double LONDPP = (MapServer.ROOT_LRLON - MapServer.ROOT_ULLON) / MapServer.TILE_SIZE;
     public Rasterer() {
-        // YOUR CODE HERE
+        // YOUR CODE
     }
 
     /**
@@ -41,12 +41,71 @@ public class Rasterer {
      * "query_success" : Boolean, whether the query was able to successfully complete; don't
      *                    forget to set this to true on success! <br>
      */
+
+    private boolean validParms(Map<String, Double> params){
+        return params.containsKey("ullon") && params.containsKey("ullat") && params.containsKey("lrlon")
+                && params.containsKey("lrlat") && params.containsKey("w") && params.containsKey("h");
+    }
+
+    private int getDepth(double needLonDPP){
+        int depth = 0;
+        double initLonDPP = LONDPP;
+        while(depth < 7 && initLonDPP > needLonDPP){
+            depth++;
+            initLonDPP /= 2.0;
+        }
+        return depth;
+    }
+
     public Map<String, Object> getMapRaster(Map<String, Double> params) {
         // System.out.println(params);
         Map<String, Object> results = new HashMap<>();
-        System.out.println("Since you haven't implemented getMapRaster, nothing is displayed in "
-                           + "your browser.");
+//        System.out.println("Since you haven't implemented getMapRaster, nothing is displayed in "
+//                           + "your browser.");
+        if(!validParms(params)) {
+            results.put("query_success", false);
+            return results;
+        }
+
+        double ullon = params.get("ullon");
+        double ullat = params.get("ullat");
+        double lrlon = params.get("lrlon");
+        double lrlat = params.get("lrlat");
+        double w = params.get("w");
+        double h = params.get("h");
+        int depth = getDepth((lrlon - ullon) / w);
+
+        double wBlock = (MapServer.ROOT_LRLON - MapServer.ROOT_ULLON) / Math.pow(2, depth);
+        double hBlock = (MapServer.ROOT_ULLAT - MapServer.ROOT_LRLAT) / Math.pow(2, depth);
+        int startX = (int) ((ullon - MapServer.ROOT_ULLON) / wBlock);
+        int startY = (int) ((MapServer.ROOT_ULLAT - ullat) / hBlock);
+        double raster_ul_lon = MapServer.ROOT_ULLON + startX * wBlock;
+        double raster_ul_lat = MapServer.ROOT_ULLAT - startY * hBlock;
+
+        int stepX = 1, stepY = 1;
+        while(raster_ul_lon + stepX * wBlock < lrlon){
+            stepX++;
+        }
+        while(raster_ul_lat - stepY * hBlock > lrlat){
+            stepY++;
+        }
+
+        String[][] render_grid = new String[stepY][stepX];
+        for(int j = 0; j < stepY; j++){
+            for(int i = 0; i < stepX; i++){
+                int x = startX + i;
+                int y = startY + j;
+                render_grid[j][i] = "d" + depth + "_x" + x + "_y" + y + ".png";
+            }
+        }
+
+        results.put("render_grid", render_grid);
+        results.put("depth", depth);
+        results.put("raster_ul_lon", raster_ul_lon);
+        results.put("raster_ul_lat", raster_ul_lat);
+        results.put("raster_lr_lon", MapServer.ROOT_ULLON + (startX + stepX) * wBlock);
+        results.put("raster_lr_lat", MapServer.ROOT_ULLAT - (startY + stepY) * hBlock);
+        results.put("query_success", true);
         return results;
     }
-
 }
