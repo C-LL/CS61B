@@ -35,50 +35,81 @@ public class SeamCarver {
         return cal(x1, y, x2, y) + cal(x, y1, x, y2);
     }
     public   int[] findHorizontalSeam(){            // sequence of indices for horizontal seam
-        double[][] energy = new double[height()][width()];
+//        double[][] energy = new double[height()][width()];
         int[] seam = new int[width()];
+        double[][] energy = calEnergy(width(), height());
+        // transform the matrix energy
+        double[][] tEnergy = new double[width()][height()];
+        for(int y = 0; y < height(); y++){
+            for(int x = 0; x < width(); x++){
+                tEnergy[x][y] = energy[y][x];
+            }
+        }
+        energy = cumulativeEnergy(tEnergy, height(), width());
         seam = findVerticalseamHelpter(energy, height(), width());
         return seam;
+    }
+    private double[][] calEnergy(int width, int height){
+        double[][] energy = new double[height][width];
+        for(int x = 0; x < width; x++){
+            for(int y = 0; y < height; y++){
+                energy[y][x] = energy(x, y);
+            }
+        }
+        return energy;
+    }
+    private double[][] cumulativeEnergy(double[][] energy, int width, int height){
+        for(int y = 1; y < height; y++){
+            for(int x = 0; x < width; x++){
+                if(x == 0) {
+                    energy[y][x] += Math.min(energy[y-1][x], energy[y-1][x+1]);
+                }else if(x == width - 1){
+                    energy[y][x] += Math.min(energy[y-1][x-1], energy[y-1][x]);
+                }else{
+                    energy[y][x] += Math.min(Math.min(energy[y-1][x-1], energy[y-1][x]), energy[y-1][x+1]);
+                }
+            }
+        }
+        return energy;
     }
     private int[] findVerticalseamHelpter(double[][] energy, int width, int height){
         double minEnergy = Double.MAX_VALUE;
         int minEnergyX = 0;
         int[] seam = new int[height];
-        for(int x = 0; x < width; x++){
-            for(int y = 0; y < height; y++){
-                energy[x][y] = energy(x, y);
-            }
-        }
+//        double[][] energy = calEnergy(width, height);
+//        energy = cumulativeEnergy(energy, width, height);
         // find lowest energy in height-1 row
         for(int x = 0; x < width; x++){
-            if(energy[x][height-1] < minEnergy){
-                minEnergy = energy[x][height-1];
+            if(energy[0][x] < minEnergy){
+                minEnergy = energy[0][x];
                 minEnergyX = x;
             }
             seam[0] = minEnergyX;
         }
-        for(int y = height-2,i = 1; y >= 0; y--, i++){
-            double Energyx_1 = energy[minEnergyX-1][y];
-            double Energyx = energy[minEnergyX][y];
-            double Energyx1 = energy[minEnergyX+1][y];
-            if(energy[minEnergyX-1][y] < energy[minEnergyX][y]){
-                if(energy[minEnergyX-1][y] < energy[minEnergyX+1][y]){
+        for(int y = 1; y < height; y++){
+            double Energyx_1 = energy[y][minEnergyX-1];
+            double Energyx = energy[y][minEnergyX];
+            double Energyx1 = energy[y][minEnergyX+1];
+            if(energy[y][minEnergyX-1] < energy[y][minEnergyX]){
+                if(energy[y][minEnergyX-1] < energy[y][minEnergyX+1]){
                     minEnergyX = minEnergyX - 1;
                 } else{
                     minEnergyX = minEnergyX + 1;
                 }
             }else{
-                if(energy[minEnergyX][y] > energy[minEnergyX+1][y]){
+                if(energy[y][minEnergyX] > energy[y][minEnergyX+1]){
                     minEnergyX = minEnergyX + 1;
                 }
             }
-            seam[i] = minEnergyX;
+            seam[y] = minEnergyX;
         }
         return seam;
     }
     public   int[] findVerticalSeam(){              // sequence of indices for vertical seam
         int[] seam = new int[height()];
-        double[][] energy = new double[width()][height()];
+//        double[][] energy = new double[height()][width()];
+        double[][] energy = calEnergy(width(), height());
+        energy = cumulativeEnergy(energy, width(), height());
         seam = findVerticalseamHelpter(energy, width(), height());
         return seam;
     }
