@@ -16,43 +16,23 @@ public class SeamCarver {
     public     int height(){                        // height of current picture
         return picture.height();
     }
+    private int cal(int x1, int y1, int x2, int y2) {
+        Color color1 = picture.get(x1, y1);
+        Color color2 = picture.get(x2, y2);
+        int rx = color1.getRed() - color2.getRed();
+        int gx = color1.getGreen() - color2.getGreen();
+        int bx = color1.getBlue() - color2.getBlue();
+        return rx * rx + gx * gx + bx * bx;
+    }
     public  double energy(int x, int y){            // energy of pixel at column x and row y
         if(x < 0 || x >= width() || y < 0 || y >= height()){
             throw new IndexOutOfBoundsException();
         }
-        Color x_1y0, x1y0, x0y_1 = null, x0y1 = null;
-        if(x - 1 >= 0 && x - 1 < width()){
-            x_1y0 = picture.get(x-1, y);
-        }else{
-            x_1y0 = picture.get(0, y);
-        }
-        if(x + 1 >= 0 && x + 1 < width()){
-            x1y0 = picture.get(x+1, y);
-        }else{
-            x1y0 = picture.get(width() - 1, y);
-        }
-        if(y - 1 >= 0 && y - 1 < height()){
-            x0y_1 = picture.get(x, y-1);
-        }else{
-            x_1y0 = picture.get(x, 0);
-        }
-        if(y + 1 >= 0 && y + 1 < height()){
-            x0y1 = picture.get(x, y+1);
-        }else{
-            x1y0 = picture.get(x, height() - 1);
-        }
-
-        int Rx = x1y0.getRed() - x_1y0.getRed();
-        int Gx = x1y0.getGreen() - x_1y0.getGreen();
-        int Bx = x1y0.getBlue() - x_1y0.getBlue();
-        int Ry = x0y1.getRed() - x0y_1.getRed();
-        int Gy = x0y1.getGreen() - x0y_1.getGreen();
-        int By = x0y1.getBlue() - x0y_1.getBlue();
-
-        int deltaX = Rx*Rx + Gx*Gx + Bx*Bx;
-        int deltaY = Ry*Ry + Gy*Gy + By*By;
-
-        return deltaX + deltaY;
+        int x1 = x - 1 < 0 ? width() - 1 : x - 1;
+        int x2 = x + 1 >= width() ? 0 : x + 1;
+        int y1 = y - 1 < 0 ? height() - 1 : y - 1;
+        int y2 = y + 1 >= height() ? 0 : y + 1;
+        return cal(x1, y, x2, y) + cal(x, y1, x, y2);
     }
     public   int[] findHorizontalSeam(){            // sequence of indices for horizontal seam
         double[][] energy = new double[height()][width()];
